@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Jobs - Workshop Manager{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Workshop Jobs</h1>
+        <a href="{% url 'jobs:job_create' %}" class="btn btn-primary">Add New Job</a>
+    </div>
+
+    {% if jobs %}
+        <div class="jobs-list">
+            {% for job in jobs %}
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3>{{ job.customer_name }}</h3>
+                        <span class="status-badge {{ job.get_status_color }}">{{ job.status }}</span>
+                    </div>
+                    <div class="job-details">
+                        <p><strong>Vehicle:</strong> {{ job.vehicle_make }} {{ job.vehicle_model }} ({{ job.vehicle_registration }})</p>
+                        <p><strong>Work Type:</strong> {{ job.get_work_type_display }}</p>
+                        <p><strong>Contact:</strong> {{ job.contact_number }}</p>
+                        <p><strong>Date Received:</strong> {{ job.date_received|date:"M d, Y" }}</p>
+                    </div>
+                    <div class="job-actions">
+                        <a href="{% url 'jobs:job_detail' job.pk %}" class="btn btn-view">View</a>
+                        <a href="{% url 'jobs:job_update' job.pk %}" class="btn btn-edit">Edit</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <p>No jobs found. <a href="{% url 'jobs:job_create' %}">Create your first job</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

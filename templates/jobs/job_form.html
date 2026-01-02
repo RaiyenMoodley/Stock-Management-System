@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Workshop Manager{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ title }}</h1>
+        <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary">Back to List</a>
+    </div>
+
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.customer_name.id_for_label }}">Customer Name *</label>
+                {{ form.customer_name }}
+                {% if form.customer_name.errors %}
+                    <div class="error">{{ form.customer_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.contact_number.id_for_label }}">Contact Number *</label>
+                {{ form.contact_number }}
+                {% if form.contact_number.errors %}
+                    <div class="error">{{ form.contact_number.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.vehicle_registration.id_for_label }}">Vehicle Registration *</label>
+                    {{ form.vehicle_registration }}
+                    {% if form.vehicle_registration.errors %}
+                        <div class="error">{{ form.vehicle_registration.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.vehicle_make.id_for_label }}">Vehicle Make *</label>
+                    {{ form.vehicle_make }}
+                    {% if form.vehicle_make.errors %}
+                        <div class="error">{{ form.vehicle_make.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.vehicle_model.id_for_label }}">Vehicle Model *</label>
+                    {{ form.vehicle_model }}
+                    {% if form.vehicle_model.errors %}
+                        <div class="error">{{ form.vehicle_model.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="{{ form.work_type.id_for_label }}">Work Type *</label>
+                    {{ form.work_type }}
+                    {% if form.work_type.errors %}
+                        <div class="error">{{ form.work_type.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.status.id_for_label }}">Status *</label>
+                    {{ form.status }}
+                    {% if form.status.errors %}
+                        <div class="error">{{ form.status.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.notes.id_for_label }}">Notes</label>
+                {{ form.notes }}
+                {% if form.notes.errors %}
+                    <div class="error">{{ form.notes.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Job</button>
+                <a href="{% if job %}{% url 'jobs:job_detail' job.pk %}{% else %}{% url 'jobs:job_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

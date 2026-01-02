@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Workshop Manager{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Dashboard</h1>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">📋</div>
+            <div class="stat-content">
+                <h3>{{ total_jobs }}</h3>
+                <p>Total Jobs</p>
+            </div>
+        </div>
+        <div class="stat-card status-red">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-content">
+                <h3>{{ pending_jobs }}</h3>
+                <p>Pending Jobs</p>
+            </div>
+        </div>
+        <div class="stat-card status-orange">
+            <div class="stat-icon">🔧</div>
+            <div class="stat-content">
+                <h3>{{ in_progress_jobs }}</h3>
+                <p>In Progress</p>
+            </div>
+        </div>
+        <div class="stat-card status-green">
+            <div class="stat-icon">✅</div>
+            <div class="stat-content">
+                <h3>{{ completed_jobs }}</h3>
+                <p>Completed</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Recent Jobs</h2>
+                <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary btn-sm">View All</a>
+            </div>
+            {% if recent_jobs %}
+                <div class="jobs-list">
+                    {% for job in recent_jobs %}
+                        <div class="job-card-small">
+                            <div class="job-header">
+                                <h4>{{ job.customer_name }}</h4>
+                                <span class="status-badge {{ job.get_status_color }}">{{ job.status }}</span>
+                            </div>
+                            <p>{{ job.vehicle_make }} {{ job.vehicle_model }} ({{ job.vehicle_registration }})</p>
+                            <p class="job-date">{{ job.date_received|date:"M d, Y" }}</p>
+                            <a href="{% url 'jobs:job_detail' job.pk %}" class="btn btn-view btn-sm">View</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No jobs yet. <a href="{% url 'jobs:job_create' %}">Create your first job</a></p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Low Stock Alert</h2>
+                <a href="{% url 'inventory:radiator_list' %}" class="btn btn-secondary btn-sm">View All</a>
+            </div>
+            {% if low_stock_radiators %}
+                <div class="low-stock-list">
+                    {% for radiator in low_stock_radiators %}
+                        <div class="low-stock-item">
+                            <div class="low-stock-header">
+                                <h4>{{ radiator.name }}</h4>
+                                <span class="low-stock-badge">{{ radiator.quantity }} left</span>
+                            </div>
+                            <p class="low-stock-vehicles">{{ radiator.compatible_vehicles|truncatewords:8 }}</p>
+                            <a href="{% url 'inventory:radiator_update' radiator.pk %}" class="btn btn-edit btn-sm">Update Stock</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>All items are well stocked! 🎉</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+            <a href="{% url 'jobs:job_create' %}" class="btn btn-primary btn-large">➕ Add New Job</a>
+            <a href="{% url 'inventory:radiator_create' %}" class="btn btn-primary btn-large">📦 Add New Stock</a>
+            <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary btn-large">📋 View All Jobs</a>
+            <a href="{% url 'inventory:radiator_list' %}" class="btn btn-secondary btn-large">📊 View Inventory</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

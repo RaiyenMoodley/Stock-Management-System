@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ job.customer_name }} - Job Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Job Details</h1>
+        <div class="header-actions">
+            <a href="{% url 'jobs:job_update' job.pk %}" class="btn btn-edit">Edit Job</a>
+            <a href="{% url 'jobs:job_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="detail-card">
+        <div class="detail-header">
+            <h2>{{ job.customer_name }}</h2>
+            <span class="status-badge {{ job.get_status_color }}">{{ job.status }}</span>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Customer Information</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Customer Name:</label>
+                    <span>{{ job.customer_name }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Contact Number:</label>
+                    <span>{{ job.contact_number }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h3>Vehicle Information</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Registration:</label>
+                    <span>{{ job.vehicle_registration }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Make:</label>
+                    <span>{{ job.vehicle_make }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Model:</label>
+                    <span>{{ job.vehicle_model }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h3>Job Information</h3>
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <label>Work Type:</label>
+                    <span>{{ job.get_work_type_display }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Status:</label>
+                    <span class="status-badge {{ job.get_status_color }}">{{ job.status }}</span>
+                </div>
+                <div class="detail-item">
+                    <label>Date Received:</label>
+                    <span>{{ job.date_received|date:"F d, Y" }}</span>
+                </div>
+            </div>
+        </div>
+
+        {% if job.notes %}
+        <div class="detail-section">
+            <h3>Notes</h3>
+            <p class="notes">{{ job.notes }}</p>
+        </div>
+        {% endif %}
+
+        <div class="detail-actions">
+            <a href="{% url 'jobs:job_update' job.pk %}" class="btn btn-primary">Edit Job</a>
+            <a href="{% url 'jobs:job_delete' job.pk %}" class="btn btn-danger">Delete Job</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
